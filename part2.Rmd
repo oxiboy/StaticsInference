@@ -1,0 +1,60 @@
+---
+title: "Statiscal Inference Course Project Part2"
+author: "Andres Felipe Lagos Ruiz"
+date: "9/18/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Abstact
+
+this is the second part of the project Statistical Inference. In this second part, it is making basics inference of the data set Tooth grown.  
+
+This data set is the response of odontoblasts in each of 10 guinea pigs at each of three dose levels of vitamin C(0.5,1 and 2 mg).  
+
+### load the libraries
+
+ ```{r,echo=T}
+ library(ggplot2)
+ #load the library of the data set
+ library(datasets)
+ data(ToothGrowth)
+ #see the data set summary
+ summary(ToothGrowth)
+ str(ToothGrowth)
+ ```
+### Provide a basic summary of the data
+
+ ```{r,echo=T,fig.height=3}
+#see the difference case between dose levels and delivery methods
+table(ToothGrowth$dose,ToothGrowth$supp)
+#Visualizate the improve of tooth growth for supplement type
+g<-ggplot(aes(x=supp, y=len), data=ToothGrowth) + geom_boxplot(aes(fill=supp))
+g+labs(title = "Tooth growth vs Supplement type")
+# see the graphics of dose levels vs delivery method
+g<-ggplot(aes(x=dose, y=len,group=dose), data=ToothGrowth) + geom_boxplot(aes(fill=dose))
+g+labs(title = "difference type of doses")
+```
+### Use confidence intervlas and hypothesis to compare tooth growth by support and dose
+ ```{r,echo=T}
+# peform the difference of support type by group
+t.test(len~supp,data=ToothGrowth)
+```
+taking this results it is possible to say that the difference supplement type have not effect on the tooth length
+
+ ```{r,echo=T}
+ # making the analises of the three type of dose
+ TG0.5<-ToothGrowth[ToothGrowth$dose==0.5,]
+ TG1<-ToothGrowth[ToothGrowth$dose==1,]
+ TG2<-ToothGrowth[ToothGrowth$dose==2,]
+ #Make the analises for dose =0.5
+ t.test(len~supp, data = TG0.5)
+ #Make the analises for dose =1
+ t.test(len~supp, data = TG1)
+ #Make the analises for dose =2
+ t.test(len~supp, data = TG2)
+ ```
+### Conclucions
+
+It is possible to say that when you improved the doses the null hypothesis of tooth growth can be reject
